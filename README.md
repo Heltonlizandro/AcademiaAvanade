@@ -22,13 +22,7 @@ Você também pode:
 
 Segue arquitetura, linguagem e componentes utilizados na aplicação:
 
-* [Visual Studio] - IDE utilizada para desenvolvimento da aplicação!
-* [IdHTTP] - Componente utilizado para efetuar o GET do arquivo a ser baixado
-* [idAntiFreeze] - Não permite o congelamento da tela
-* [SaveDialog] - Permite a escolha do caminho a ser salvo o arquivo
-* [idSSLIOHandlerSocketOpenSSL] - Utilizado na escolha da(s) versão(ões) do SSL
-* [FDConnectio] - Utilizado para conectar com o banco de dados "SQLite"
-* [FDQuery] - Utilizado para realização das consultas e inserções na tabela de log
+* [Visual Studio] - IDE utilizada para desenvolvimento da aplicação.
 
 ## Papeis
   - __Product Owner:__ Helton Lizandro
