@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Consignado"
+    }
+  },
+  "defaultProject": "Consignado",
+  "cli": {
+    "analytics": "163b7765-78e6-4d88-b082-5dd374ddf352"
+  }
 }
