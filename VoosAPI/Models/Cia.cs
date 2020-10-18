@@ -11,10 +11,7 @@ namespace VoosAPI.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
-        [BsonElement("Id")]
-        public string IdentificadorSecundario { get; set; } 
+        public string Id { get; set; } 
 
         [BsonElement("Nome Empresas")]
         public string NomeEmpresa { get; set; }

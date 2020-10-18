@@ -34,8 +34,16 @@ namespace VoosAPI
             services.AddSingleton<IVoosDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<VoosDatabaseSettings>>().Value);
 
-            services.AddSingleton<CiasService>();
+            services.AddSingleton<VoosService>();
 
+            services.Configure<CiasDatabaseSettings>(
+                Configuration.GetSection(nameof(CiasDatabaseSettings)));
+
+            services.AddSingleton<ICiasDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<CiasDatabaseSettings>>().Value);
+            
+            services.AddSingleton<CiasService>();
+            
             services.AddControllers();
         }
 

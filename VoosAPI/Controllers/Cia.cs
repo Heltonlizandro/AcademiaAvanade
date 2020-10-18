@@ -19,11 +19,11 @@ namespace VoosAPI.Controllers
         }
 
         [HttpGet]
-        [Route("/cias")]
+        [Route("/cias/todas")]
         public ActionResult<List<Cia>> Get() =>
             _ciasService.Get();
 
-        [Route("/cias/GetCia")]
+        [Route("/cias/recuperar/{id}")]
         public ActionResult<Cia> Get(string id)
         {
             var cia = _ciasService.Get(id);
@@ -37,7 +37,7 @@ namespace VoosAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/cias")]
+        [Route("/cias/criar")]
         public ActionResult<Cia> Create(Cia cia)
         {
             _ciasService.Create(cia);
@@ -46,7 +46,7 @@ namespace VoosAPI.Controllers
         }
 
         [HttpPut]
-        [Route("/cias/{id}")]
+        [Route("/cias/atualizar/{id}")]
         public IActionResult Update(string id, Cia ciaIn)
         {
             var cia = _ciasService.Get(id);
@@ -58,7 +58,7 @@ namespace VoosAPI.Controllers
             return NoContent();
         }
         [HttpDelete]
-        [Route("/cias/{id}")]
+        [Route("/cias/deletar/{id}")]
         public IActionResult Delete(string id)
         {
             var cia = _ciasService.Get(id);

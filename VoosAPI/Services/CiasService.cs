@@ -11,12 +11,12 @@ namespace VoosAPI.Services
     {
         private readonly IMongoCollection<Cia> _cias;
 
-        public CiasService(IVoosDatabaseSettings settings)
+        public CiasService(ICiasDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _cias = database.GetCollection<Cia>(settings.VoosCollectionName);
+            _cias = database.GetCollection<Cia>(settings.CiasCollectionName);
         }
         public List<Cia> Get() =>
          _cias.Find(cia => true).ToList();
@@ -32,8 +32,10 @@ namespace VoosAPI.Services
 
         public void Update(string id, Cia ciaIn) =>
             _cias.ReplaceOne(cia => cia.Id == id, ciaIn);
+       
         public void Remove(Cia ciaIn) =>
             _cias.DeleteOne(cia => cia.Id == ciaIn.Id);
+        
         public void remove(string id) =>
             _cias.DeleteOne(cia => cia.Id == id);
 
