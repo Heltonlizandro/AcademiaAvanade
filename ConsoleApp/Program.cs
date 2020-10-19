@@ -10,17 +10,97 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            
-            var teste = new ConsumoAPI();
 
+            var consumo = new ConsumoAPI();
+            //atualiza as cias aereas na base de dados pegando do json
             //teste.AtualizaCiasAereas();
-            teste.AtualizaVoosDisponiveis();
+            //atualiza os voos disponíveis na base de dados pegando do json
+            //teste.AtualizaVoosDisponiveis();
 
-            var listavoos = teste.VoosDisponiveis();
+            //carregar a lista de todos os voos disponíveis
+            var listaVoosDisp = consumo.VoosDisponiveis();
+            List<Voo> listaVooSelecionados = new List<Voo>();
 
-            //Voo voo = teste.VooById("5f874d41b3c8bd2ee8871aff");
+            //alimentando a lista com os tres primeiros voos disponiveis
+            for (int i = 0; i < 3; i++)
+            {
+                listaVooSelecionados.Add(listaVoosDisp[i]);
+            }
 
-            //Console.WriteLine("teste");
+            //atualizar na tela informando as pessoas que irão ingressar em cada voo selecionado
+            //Para cada voo, preencher os dados da pessoa
+            foreach (var vooCliente in listaVooSelecionados)
+            {
+                int i = 0;
+                i++;
+
+                switch (i)
+                {
+                    case 1: 
+                        {
+                            vooCliente.pessoa = new Pessoa();
+                            vooCliente.pessoa.CPF = "02458745874";
+                            vooCliente.pessoa.Nome = "Elizeu Helton Stewart";
+                            vooCliente.pessoa.DtNascimento = DateTime.Now;
+
+                            if (vooCliente.pessoa.ConsultarPessoaCPF(vooCliente.pessoa.CPF) != null)
+                            {
+                                vooCliente.pessoa.Alterar();
+                            } else
+                            {
+                                vooCliente.pessoa.Salvar();
+                            }
+
+                            break;
+                        }
+                    case 2:
+                        {
+                            vooCliente.pessoa = new Pessoa();
+                            vooCliente.pessoa.CPF = "38541546852";
+                            vooCliente.pessoa.Nome = "Joao da Silva";
+                            vooCliente.pessoa.DtNascimento = DateTime.Now;
+
+                            if (vooCliente.pessoa.ConsultarPessoaCPF(vooCliente.pessoa.CPF) != null)
+                            {
+                                vooCliente.pessoa.Alterar();
+                            }
+                            else
+                            {
+                                vooCliente.pessoa.Salvar();
+                            }
+
+                            break;
+                        }
+                    case 3:
+                        {
+                            vooCliente.pessoa = new Pessoa();
+                            vooCliente.pessoa.CPF = "94587215438";
+                            vooCliente.pessoa.Nome = "Maria Jose da Silva";
+                            vooCliente.pessoa.DtNascimento = DateTime.Now;
+
+                            if (vooCliente.pessoa.ConsultarPessoaCPF(vooCliente.pessoa.CPF) != null)
+                            {
+                                vooCliente.pessoa.Alterar();
+                            }
+                            else
+                            {
+                                vooCliente.pessoa.Salvar();
+                            }
+
+                            break;
+                        }
+
+                    default:
+                        break;
+                }
+            }
+            
+            //chamar o métido para registrar e validar as vagas disponiveis
+            consumo.ReservarVoos(listaVooSelecionados);
+
+            //pagamento da lista das reservas
+
+            
 
             /*
 try

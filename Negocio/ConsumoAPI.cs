@@ -7,7 +7,7 @@ namespace Negocio
 {
     public class ConsumoAPI : DataBase.ADb
     {
-        //private static int idClienteLogado;
+        public static int idClienteLogado;
         //VooRepositorioAPI repositorio;
         //Task<VooAPI> vooAPI;
 
@@ -122,66 +122,78 @@ namespace Negocio
             return listaRetorno;
         }
 
-        public Voo VooById(string id)
+        public VooAPI VooById(string id)
         {
             VooRepositorioAPI repositorio;
             repositorio = new VooRepositorioAPI();
             var voosTask = repositorio.GetVooAsyncById(id);
-            var vooDisp = new Voo();
+            var vooDisp = new VooAPI();
 
             voosTask.ContinueWith(task =>
             {
                 vooDisp.Id = voosTask.Result.Id;
-                //WriteLine(v.Id);
-
+                vooDisp.InicioOperacao = voosTask.Result.InicioOperacao;
+                vooDisp.Empresa = voosTask.Result.Empresa;
+                vooDisp.NumeroVoo = voosTask.Result.NumeroVoo;
+                vooDisp.QuantidadeAssentos = voosTask.Result.QuantidadeAssentos;
+                vooDisp.QuantidadeOcupado = voosTask.Result.QuantidadeOcupado;
+                vooDisp.CodigoOrigem = voosTask.Result.CodigoOrigem;
+                vooDisp.AeroportoOrigem = voosTask.Result.AeroportoOrigem;
+                vooDisp.CodigoDestino = voosTask.Result.CodigoDestino;
+                vooDisp.AeroportoDestino = voosTask.Result.AeroportoDestino;
+                vooDisp.HorarioPartida = voosTask.Result.HorarioPartida;
+                //vooDisp.VlAdulto = 100.00M;
+                //vooDisp.VlCrianca = 50.00M;
+                vooDisp.InicioOperacao = voosTask.Result.InicioOperacao;
+                vooDisp.FimOperacao = voosTask.Result.FimOperacao;
                 Environment.Exit(0);
             },
            TaskContinuationOptions.OnlyOnRanToCompletion
            );
 
-            Console.WriteLine(voosTask.Result.Id);
-            //vooDisp.Id = voosTask.Result.Id;
-            //vooDisp.CodEmpresa = voosTask.Result.CodigoEmpresa;
-            /*vooDisp.Empresa = voosTask.Result.Empresa;
-            vooDisp.nVoo = voosTask.Result.NumeroVoo;
-            if (Int32.TryParse(voosTask.Result.QuantidadeAssentos, out int j)) { vooDisp.QtdMaxima = j; }
-            if (Int32.TryParse(voosTask.Result.QuantidadeOcupado, out int a)) { vooDisp.QtdOcupada = a; }
-            vooDisp.CodOrigem = voosTask.Result.CodigoOrigem;
-            vooDisp.DescOrigem = voosTask.Result.AeroportoOrigem;
-            vooDisp.CodDestino = voosTask.Result.CodigoDestino;
-            vooDisp.DescDestino = voosTask.Result.AeroportoDestino;
-            vooDisp.HoraPartida = voosTask.Result.HorarioPartida;
-            vooDisp.VlAdulto = 100.00M;
-            vooDisp.VlCrianca = 50.00M;
-            vooDisp.InicioOperacao = DateTime.Parse(voosTask.Result.InicioOperacao);
-            vooDisp.FimOperacao = DateTime.Parse(voosTask.Result.FimOperacao);*/
-
-
             return vooDisp;
         }
 
-        /*public void ReservarVoos(List<Voo> listaVoo)
-        {
-            //1-Reservar o voo na CIA aerea utilizando API
-            //2-Atualizar a PEDIDOS_VOO com as informações do voo reservado
 
+        public bool ReservaVooAPI(string id)
+        {
+            VooAPI voo = VooById(id);
+
+            if (voo != null && int.Parse(voo.QuantidadeAssentos) < int.Parse(voo.QuantidadeOcupado))
+            {
+                var i = int.Parse(voo.QuantidadeOcupado) + 1;
+                voo.QuantidadeOcupado = i.ToString();
+                VooRepositorioAPI repositorio;
+                repositorio = new VooRepositorioAPI();
+                var voosTask = repositorio.PutVooAsyncById(voo.Id);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public void ReservarVoos(List<Voo> listaVoo)
+        {
             foreach (var vooCli in listaVoo)
             {
-                //1-reservar pela API
-                //2-registrar na base PEDIDOS_VOO
-
-                new Pedido()
+                //1-Reservar o voo na CIA aerea utilizando API
+                if (ReservaVooAPI(vooCli.Id))
                 {
-                    Id_Pessoa = vooCli.pessoa.Id,
-                    Id_Cliente = idClienteLogado,
-                    Id_Voo = vooCli.Id,
-                    Status = "R",
-                    Dt_Reserva = DateTime.Now,
-                    Dt_Cancelado = null,
-                    Vl_Passagem = 100.00
-                }.Salvar();
+                    //2-Atualizar a PEDIDOS com as informações do voo reservado
+                    new Pedido()
+                    {
+                        Id_Pessoa = vooCli.pessoa.Id,
+                        Id_Cliente = idClienteLogado,
+                        Id_Voo = vooCli.Id,
+                        Status = "R",
+                        Dt_Reserva = DateTime.Now,
+                        Dt_Cancelado = null,
+                        Vl_Passagem = vooCli.vlVoo
+                    }.Salvar();
+                }
             }
-        }*/
+        }
 
         /*public void CancelarReserva(List<Voo> listaVoo)
         {

@@ -7,7 +7,7 @@ using DataBase;
 namespace Negocio
 {
     [Table(Name = "Pessoas")]
-    public class Pessoa : DataBase.ADb
+    public class Pessoa : DataBase.DbPessoa
     {
         [Colum(PrimaryKey = true)]
         public int Id { get; set; }

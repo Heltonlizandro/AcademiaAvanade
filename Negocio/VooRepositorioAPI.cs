@@ -54,7 +54,6 @@ namespace Negocio
             return new List<CiaAPI>();
         }
 
-
         public async Task<List<VooAPI>> PutVooAsyncById(string id)
         {
             HttpResponseMessage response = await vooCia.GetAsync("voos/atualizar/{id}");

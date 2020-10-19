@@ -35,7 +35,7 @@ namespace DataBase
 
         public bool ReservaVagaVooCliente() //ADb dbVoo
         {
-            //Chamar a API que busca e atualiza a vaga para o cliente solicitante
+            //Chamar a API que busca e atualiza a vaga para o cliente solicitante            
             return true;
         }
     }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Negocio
 {
     [DataBase.Table(Name = "Pedidos_Voo")]
-    public class PedidoVoo : DataBase.DbPedidoVoo
+    public class PedidoVoo : DataBase.DbPessoa
     {
         [Colum(PrimaryKey = true)]
         public int Id { get; set; }
