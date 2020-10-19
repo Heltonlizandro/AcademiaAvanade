@@ -9,7 +9,7 @@ namespace DataBase
     public abstract class ADb : IDbs
     {
         public const string STRING_CNN = @"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=PROJETO_AVANADE;Data Source=DESKTOP-E7ICRAI\SQLEXPRESS";
-        public virtual void Salvar()
+        public virtual int Salvar()
         {
             foreach (var p in this.GetType().GetProperties())
             {
@@ -20,7 +20,7 @@ namespace DataBase
                 }
             }
 
-            new Db().Salvar(this);
+            return new Db().Salvar(this);
         }
 
         public virtual void Alterar()
@@ -37,5 +37,11 @@ namespace DataBase
         {
             return new Db().Todos(this);
         }
+
+        public virtual ADb ConsultaById(string id)
+        {
+            return new Db().ConsultaById(this, id);
+        }
+
     }
 }

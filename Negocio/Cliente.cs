@@ -15,5 +15,8 @@ namespace Negocio
         public string Senha { get; set; }
         [Colum(IsNotOnDataBase = true)]
         public string CEP { get; set; }
+
+        //[Validation(Presence = true)]
+        //[Colum(IsNotOnDataBase = true)]
     }
 }

@@ -10,6 +10,48 @@ namespace DataBase
     {
         private const string STRING_CNN = @"Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=PROJETO_AVANADE;Data Source=DESKTOP-E7ICRAI\SQLEXPRESS";
 
+        public ADb ConsultaById(ADb aDb, string id)
+        {
+
+            TableAttribute tableAttribute = aDb.GetType().GetCustomAttribute<TableAttribute>();
+            string nomeTabela = tableAttribute != null && !string.IsNullOrEmpty(tableAttribute.Name) ? tableAttribute.Name : aDb.GetType().Name;
+            string queryString = $"SELECT * FROM {nomeTabela} where id = '{id}';";
+
+            using (SqlConnection connection = new SqlConnection(STRING_CNN))
+            {
+                SqlCommand command =
+                    new SqlCommand(queryString, connection);
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                var newAbb = (ADb)Activator.CreateInstance(aDb.GetType());
+
+                while (reader.Read())
+                {
+
+                    foreach (var p in aDb.GetType().GetProperties())
+                    {
+                        ColumAttribute columAttribute = p.GetCustomAttribute<ColumAttribute>();
+                        if (columAttribute != null && columAttribute.IsNotOnDataBase) continue;
+
+                        string nomeColunaTabela = columAttribute != null && !string.IsNullOrEmpty(columAttribute.Name) ? columAttribute.Name : p.Name;
+                        
+                        if (p.GetValue(aDb) == null) continue;
+
+                        //if ((reader[nomeColunaTabela] == DBNull.Value) || (columAttribute.PrimaryKey))  continue;
+
+                        p.SetValue(newAbb, reader[nomeColunaTabela]);
+
+                    }
+                }
+
+                reader.Close();
+                connection.Close();
+
+                return newAbb;
+            }
+        }
         public List<ADb> Todos(ADb aDb)
         {
             TableAttribute tableAttribute = aDb.GetType().GetCustomAttribute<TableAttribute>();
@@ -27,7 +69,6 @@ namespace DataBase
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-
                     var newAbb = (ADb)Activator.CreateInstance(aDb.GetType());
                     foreach (var p in aDb.GetType().GetProperties())
                     {
@@ -35,7 +76,10 @@ namespace DataBase
                         if (columAttribute != null && columAttribute.IsNotOnDataBase) continue;
 
                         string nomeColunaTabela = columAttribute != null && !string.IsNullOrEmpty(columAttribute.Name) ? columAttribute.Name : p.Name;
-                        p.SetValue(aDb, reader[nomeColunaTabela]);
+
+                        if (reader[nomeColunaTabela] == DBNull.Value) continue;
+
+                        p.SetValue(newAbb, reader[nomeColunaTabela]);
                     }
 
                     adbs.Add(newAbb);
@@ -48,7 +92,7 @@ namespace DataBase
             }
         }
 
-        public void Salvar(ADb aDb)
+        public int Salvar(ADb aDb)
         {
             using (SqlConnection connection = new SqlConnection(STRING_CNN))
             {
@@ -61,7 +105,7 @@ namespace DataBase
                     {
                         ColumAttribute columAttribute = p.GetCustomAttribute<ColumAttribute>();
                         if (p.GetValue(aDb) == null) continue;
-                        if (columAttribute != null && (columAttribute.PrimaryKey || columAttribute.IsNotOnDataBase)) continue;
+                        if (columAttribute != null /*&& (columAttribute.PrimaryKey*/ || columAttribute.IsNotOnDataBase) continue;
 
                         string nomeColunaTabela = columAttribute != null && !string.IsNullOrEmpty(columAttribute.Name) ? columAttribute.Name : p.Name;
                         colunas.Add(nomeColunaTabela);
@@ -94,7 +138,7 @@ namespace DataBase
 
                     connection.Open();
 
-                    command.ExecuteNonQuery();
+                    return command.ExecuteNonQuery();
                 }
                 catch (Exception err)
                 {
@@ -105,6 +149,8 @@ namespace DataBase
                     connection.Close();
                 }
             }
+
+            return 0;
         }
 
         public void Alterar(ADb aDb)
@@ -180,7 +226,7 @@ namespace DataBase
             {
                 try
                 {
-                    var chavePk = "";                    
+                    var chavePk = "";
                     var parans = new List<string>();
 
                     foreach (var p in aDb.GetType().GetProperties())
@@ -194,10 +240,10 @@ namespace DataBase
                             string nomeColunaPk = columAttribute != null && !string.IsNullOrEmpty(columAttribute.Name) ? columAttribute.Name : p.Name;
                             chavePk = nomeColunaPk + "=" + p.GetValue(aDb);
                         }
-                        else 
-                        { 
-                            continue; 
-                        }                        
+                        else
+                        {
+                            continue;
+                        }
 
                         string nomeColunaTabela = columAttribute != null && !string.IsNullOrEmpty(columAttribute.Name) ? columAttribute.Name : p.Name;
                         //parans.Add($"{nomeColunaTabela} = @{nomeColunaTabela}"); //= {p.GetValue(aDb)}
@@ -227,6 +273,6 @@ namespace DataBase
                     connection.Close();
                 }
             }
-        }       
+        }
     }
 }

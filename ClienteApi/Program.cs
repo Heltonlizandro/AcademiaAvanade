@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ClienteApi
 {
@@ -9,22 +10,22 @@ namespace ClienteApi
         {
             Console.WriteLine("Acessando a API de voos, aguarde um momento...");
 
-            var repositorio = new VooRepositorio();
+            var repositorio = new VooRepositorioAPI();
 
             var voosTask = repositorio.GetVooAsync();
 
             voosTask.ContinueWith(voosTask =>
             {
-                var voos = task.Result;
+                var voos = voosTask.Result;
                 foreach (var v in voos)
-                    WriteLine(v.ToString());
+                    Console.WriteLine(v.ToString());
 
                 Environment.Exit(0);
             },
             TaskContinuationOptions.OnlyOnRanToCompletion
             );
 
-            Console.ReadLine();
+            Console.WriteLine();
 
         }
     }

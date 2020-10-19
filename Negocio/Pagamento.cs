@@ -11,19 +11,20 @@ namespace Negocio
     {
         [Colum(PrimaryKey = true)]
         public int Id { get; set; }
-        [Validation(Presence = true)]
-        public string Nome { get; set; }
-        [Colum(Name = "CPF")]
-        public string CPF { get; set; }
-        public string Email { get; set; }
-
-        [Colum(IsNotOnDataBase = true)]
-        public string CEP { get; set; }
+        [Colum(Name = "ID_FORMA_PAGAMENTO")]
+        public int IdFormaPagamento { get; set; }
+        [Colum(Name = "DT_PAGAMENTO")]
+        public DateTime DtPagamento { get; set; }
+        [Colum(Name = "QTD_PARCELA")]
+        public int QtdParcela { get; set; }
+        [Colum(Name = "VL_PARCELA")]
+        public double vLParcela { get; set; }
+        [Colum(Name = "VL_TOTAL")]
+        public double vLTotal { get; set; }
 
         public bool Valido()
         {
             return true;
         }
-
     }
 }
