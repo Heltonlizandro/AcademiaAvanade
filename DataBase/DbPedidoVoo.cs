@@ -9,12 +9,14 @@ namespace DataBase
 {
     public abstract class DbPedidoVoo : ADb
     {
-        public override void Salvar()
+        public override int Salvar()
         {
             if (ReservaVagaVooCliente())
             {
-                base.Salvar();
+                return base.Salvar();
             }
+
+            return 0;
         }
 
         public override void Alterar()
@@ -32,7 +34,7 @@ namespace DataBase
             return base.Todos();
         }        
 
-        public bool ReservaVagaVooCliente(ADb dbVoo)
+        public bool ReservaVagaVooCliente()
         {
             //Chamar a API que busca e atualiza a vaga para o cliente solicitante
             return true;

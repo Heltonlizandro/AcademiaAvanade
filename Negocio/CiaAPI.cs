@@ -7,7 +7,7 @@ using System.Text;
 namespace Negocio
 {
     public class CiaAPI
-    {
+    {        
         public string Id { get; set; }
         public string siglaOACI { get; set; }
         public string NomeEmpresa { get; set; }

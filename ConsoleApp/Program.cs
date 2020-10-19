@@ -11,16 +11,16 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             
-            var teste = new ConsumoAPI("5f874d41b3c8bd2ee8871aff");
+            var teste = new ConsumoAPI();
 
             //teste.AtualizaCiasAereas();
             teste.AtualizaVoosDisponiveis();
 
             var listavoos = teste.VoosDisponiveis();
 
-            Voo voo = teste.VooById("5f874d41b3c8bd2ee8871aff");
+            //Voo voo = teste.VooById("5f874d41b3c8bd2ee8871aff");
 
-            Console.WriteLine("teste");
+            //Console.WriteLine("teste");
 
             /*
 try

@@ -9,7 +9,7 @@ namespace Negocio
     [Table(Name = "Cias_Aereas")]
     public class CiaAerea : DataBase.ADb
     {
-        //[Colum(PrimaryKey = true)]
+        [Colum(PrimaryKey = true)]
         public string Id { get; set; }
         public string Sigla { get; set; }
         public string Nome { get; set; }

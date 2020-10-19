@@ -105,7 +105,7 @@ namespace DataBase
                     {
                         ColumAttribute columAttribute = p.GetCustomAttribute<ColumAttribute>();
                         if (p.GetValue(aDb) == null) continue;
-                        if (columAttribute != null /*&& (columAttribute.PrimaryKey*/ || columAttribute.IsNotOnDataBase) continue;
+                        if (columAttribute != null && /*(columAttribute.PrimaryKey ||*/ columAttribute.IsNotOnDataBase) continue;
 
                         string nomeColunaTabela = columAttribute != null && !string.IsNullOrEmpty(columAttribute.Name) ? columAttribute.Name : p.Name;
                         colunas.Add(nomeColunaTabela);
